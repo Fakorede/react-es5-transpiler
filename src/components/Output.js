@@ -4,6 +4,7 @@ const Output = ({ output, hasError }) => {
   return (
     <div className="output">
       <textarea
+        name='output'
         className="output-box"
         value={hasError ? '' : output}
         readOnly={true}

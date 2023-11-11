@@ -5,6 +5,7 @@ const Input = ({ input, handleInputChange, errorMsg }) => {
   return (
     <div className="input">
       <textarea
+        name='input'
         className="input-box"
         placeholder="Write code here"
         value={input}
