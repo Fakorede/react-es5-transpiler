@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import _ from 'lodash';
 import Input from './components/Input';
 import Output from './components/Output';
@@ -9,22 +9,29 @@ const App = () => {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const ref = useRef();
 
-  function handleInputChange(event) {
+  useEffect(() => {
+    ref.current = _.debounce(generateResult, 1000);
+  }, []);
+
+  function generateResult(value) {
     try {
-      const value = event.target.value;
-      setInput(value);
-     
       const result = babel.transform(value, {
         presets: ['env', 'react'],
         filename: '/App.js'
       }).code;
       setOutput(result);
-
       setErrorMsg('');
     } catch (e) {
       setErrorMsg(e.message);
     }
+  }
+
+  function handleInputChange(event) {
+    const value = event.target.value;
+    setInput(value);
+    ref.current(value);
   }
 
   return (
